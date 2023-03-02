@@ -80,6 +80,8 @@ class _UserNameScreenState extends State<UserNameScreen> {
             TextField(
               controller: _usernameController,
               decoration: InputDecoration(
+                errorText:
+                    _username.isEmpty ? "Username cannot be empty" : null,
                 hintText: "Username",
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
