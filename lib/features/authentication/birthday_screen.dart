@@ -104,6 +104,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
               },
               child: const FormButton(
                 disable: false,
+                text: "Next",
               ),
             ),
           ],
