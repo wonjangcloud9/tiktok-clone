@@ -3,6 +3,7 @@ import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
+import '../onboarding/interests_screen.dart';
 
 class LoginFormScreen extends StatefulWidget {
   const LoginFormScreen({super.key});
@@ -20,7 +21,11 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
-        print(formData);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const InterestsSreen(),
+          ),
+        );
       }
     }
   }
@@ -44,7 +49,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                   hintText: "Enter your email",
                 ),
                 validator: (value) {
-                  return "I don't like this email";
+                  // return "I don't like this email";
                 },
                 onSaved: (newValue) {
                   if (newValue != null) {
@@ -58,7 +63,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                   hintText: "Enter your password",
                 ),
                 validator: (value) {
-                  return "wrong password";
+                  // return "wrong password";
                 },
                 onSaved: (newValue) {
                   if (newValue != null) {
@@ -68,7 +73,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
               ),
               Gaps.v28,
               GestureDetector(
-                onTap: _onSubmitTap(),
+                onTap: _onSubmitTap,
                 child: const FormButton(
                   disable: false,
                   text: "Login",
