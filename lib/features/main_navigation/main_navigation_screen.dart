@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/nav_tab.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/post_video_button.dart';
+import 'package:tiktok_clone/features/videos/video_timeline_screen.dart';
 
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
@@ -15,42 +15,6 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  final screens = [
-    const Center(
-      child: Text(
-        "Home",
-        style: TextStyle(
-          fontSize: 40,
-        ),
-      ),
-    ),
-    const Center(
-      child: Text(
-        "Discover",
-        style: TextStyle(
-          fontSize: 40,
-        ),
-      ),
-    ),
-    Container(),
-    const Center(
-      child: Text(
-        "InBox",
-        style: TextStyle(
-          fontSize: 40,
-        ),
-      ),
-    ),
-    const Center(
-      child: Text(
-        "Profile",
-        style: TextStyle(
-          fontSize: 40,
-        ),
-      ),
-    ),
-  ];
-
   int _selectedIndex = 0;
 
   void _onTap(int index) {
@@ -73,7 +37,26 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: screens.elementAt(_selectedIndex),
+      body: Stack(
+        children: [
+          Offstage(
+            offstage: _selectedIndex != 0,
+            child: const VideoTimelineScreen(),
+          ),
+          Offstage(
+            offstage: _selectedIndex != 1,
+            child: const VideoTimelineScreen(),
+          ),
+          Offstage(
+            offstage: _selectedIndex != 3,
+            child: const VideoTimelineScreen(),
+          ),
+          Offstage(
+            offstage: _selectedIndex != 4,
+            child: const VideoTimelineScreen(),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.black,
         child: Padding(
