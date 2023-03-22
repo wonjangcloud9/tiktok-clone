@@ -28,6 +28,7 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
           Colors.teal,
         ],
       );
+      setState(() {});
     }
   }
 
