@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 
 class VideoPost extends StatefulWidget {
@@ -41,6 +42,7 @@ class _VideoPostState extends State<VideoPost>
 
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
+    await _videoPlayerController.setLooping(true);
     setState(() {});
     _videoPlayerController.addListener(() {
       _onVideoChange();
@@ -127,7 +129,30 @@ class _VideoPostState extends State<VideoPost>
                 ),
               ),
             ),
-          ))
+          )),
+          Positioned(
+            bottom: 20,
+            left: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  "@원장",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: Sizes.size20,
+                      fontWeight: FontWeight.bold),
+                ),
+                Gaps.v10,
+                Text(
+                  "원장님의 특별한 강의",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
