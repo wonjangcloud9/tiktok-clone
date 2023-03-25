@@ -71,7 +71,7 @@ class _VideoPostState extends State<VideoPost>
 
   void _onVisibilityChanged(VisibilityInfo visibilityInfo) {
     final visiblePercentage = visibilityInfo.visibleFraction * 100;
-    if (visiblePercentage == 100) {
+    if (visiblePercentage == 100 && _isPaused) {
       _videoPlayerController.play();
     } else {
       _videoPlayerController.pause();
