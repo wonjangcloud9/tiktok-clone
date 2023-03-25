@@ -18,7 +18,9 @@ class _VideoCommentsState extends State<VideoComments> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
+      height: size.height * 0.7,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
@@ -40,87 +42,117 @@ class _VideoCommentsState extends State<VideoComments> {
             ),
           ],
         ),
-        body: ListView.separated(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Sizes.size16,
-            vertical: Sizes.size10,
-          ),
-          separatorBuilder: (context, index) => Gaps.v20,
-          itemCount: 10,
-          itemBuilder: (context, index) => Row(
-            children: [
-              CircleAvatar(
-                radius: 18,
-                child: const Text("원장"),
+        body: Stack(
+          children: [
+            ListView.separated(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Sizes.size16,
+                vertical: Sizes.size10,
               ),
-              Gaps.h10,
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+              separatorBuilder: (context, index) => Gaps.v20,
+              itemCount: 10,
+              itemBuilder: (context, index) => Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 18,
+                    child: Text("원장"),
+                  ),
+                  Gaps.h10,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "test",
-                          style: TextStyle(color: Colors.grey.shade500),
+                        Row(
+                          children: [
+                            Text(
+                              "test",
+                              style: TextStyle(color: Colors.grey.shade500),
+                            ),
+                            Gaps.h10,
+                            Text(
+                              "test",
+                              style: TextStyle(color: Colors.grey.shade500),
+                            ),
+                          ],
                         ),
-                        Gaps.h10,
+                        Gaps.v5,
                         Text(
                           "test",
                           style: TextStyle(color: Colors.grey.shade500),
                         ),
                       ],
                     ),
-                    Gaps.v5,
-                    Text(
-                      "test",
-                      style: TextStyle(color: Colors.grey.shade500),
-                    ),
-                  ],
-                ),
-              ),
-              Gaps.h10,
-              Column(
-                children: [
-                  FaIcon(
-                    FontAwesomeIcons.heart,
-                    size: Sizes.size20,
-                    color: Colors.grey.shade500,
                   ),
-                  Gaps.v2,
-                  Text(
-                    "52.2K",
-                    style: TextStyle(
-                      color: Colors.grey.shade500,
-                    ),
+                  Gaps.h10,
+                  Column(
+                    children: [
+                      FaIcon(
+                        FontAwesomeIcons.heart,
+                        size: Sizes.size20,
+                        color: Colors.grey.shade500,
+                      ),
+                      Gaps.v2,
+                      Text(
+                        "52.2K",
+                        style: TextStyle(
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: BottomAppBar(
-            child: Row(
-          children: [
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Add a comment...",
-                  hintStyle: TextStyle(color: Colors.grey.shade500),
-                  contentPadding: const EdgeInsets.symmetric(
+            ),
+            Positioned(
+              width: size.width,
+              bottom: 0,
+              child: BottomAppBar(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: Sizes.size16,
                     vertical: Sizes.size10,
+                  ),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 18,
+                        backgroundColor: Colors.grey.shade500,
+                        foregroundColor: Colors.white,
+                        child: const Text("원장"),
+                      ),
+                      Gaps.h10,
+                      Expanded(
+                        child: TextField(
+                          cursorColor: Theme.of(context).primaryColor,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                Sizes.size12,
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
+                            hintText: "Write a comment...",
+                            hintStyle: TextStyle(color: Colors.grey.shade500),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: Sizes.size12,
+                              vertical: Sizes.size10,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text("전송"),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-            TextButton(
-              onPressed: () {},
-              child: const Text("Post"),
-            ),
           ],
-        )),
+        ),
       ),
     );
   }
