@@ -72,14 +72,22 @@ class _VideoPostState extends State<VideoPost>
 
   void _onVisibilityChanged(VisibilityInfo visibilityInfo) {
     final visiblePercentage = visibilityInfo.visibleFraction * 100;
-    if (visiblePercentage == 100 && _isPaused) {
+    if (visiblePercentage == 100 &&
+        !_videoPlayerController.value.isPlaying &&
+        !_isPaused) {
       _videoPlayerController.play();
-    } else {
+    }
+    if (visiblePercentage == 0 &&
+        !_isPaused &&
+        _videoPlayerController.value.isPlaying) {
       _videoPlayerController.pause();
     }
   }
 
   void _onTogglePause() {
+    if (!mounted) {
+      return;
+    }
     if (_videoPlayerController.value.isPlaying) {
       _videoPlayerController.pause();
       _animationController.reverse();
@@ -135,7 +143,7 @@ class _VideoPostState extends State<VideoPost>
                   );
                 },
                 child: AnimatedOpacity(
-                  opacity: _isPaused ? 0 : 1,
+                  opacity: _isPaused ? 1 : 0,
                   duration: _animationDuration,
                   child: const FaIcon(
                     FontAwesomeIcons.play,
