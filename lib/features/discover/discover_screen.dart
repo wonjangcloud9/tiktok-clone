@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 
 final tabs = [
@@ -53,13 +55,67 @@ class DiscoverScreen extends StatelessWidget {
                 crossAxisCount: 2,
                 crossAxisSpacing: Sizes.size10,
                 mainAxisSpacing: Sizes.size10,
-                childAspectRatio: 9 / 16,
+                childAspectRatio: 9 / 20,
               ),
-              itemBuilder: (context, index) => Container(
-                color: Colors.teal,
-                child: Center(
-                  child: Text("Item $index"),
-                ),
+              itemBuilder: (context, index) => Column(
+                children: [
+                  AspectRatio(
+                    aspectRatio: 9 / 16,
+                    child: FadeInImage.assetNetwork(
+                      fit: BoxFit.cover,
+                      placeholder: "assets/images/placeholder.jpg",
+                      image:
+                          "https://upload.wikimedia.org/wikipedia/en/2/2d/SSU_Kirby_artwork.png",
+                    ),
+                  ),
+                  Gaps.v10,
+                  const Text(
+                    "커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 ",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: Sizes.size12 + Sizes.size2,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Gaps.v5,
+                  DefaultTextStyle(
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade600,
+                    ),
+                    child: Row(
+                      children: const [
+                        CircleAvatar(
+                          radius: Sizes.size16,
+                          backgroundImage: NetworkImage(
+                              "https://avatars.githubusercontent.com/u/48057918?v=4"),
+                        ),
+                        Gaps.h4,
+                        Expanded(
+                          child: Text(
+                            "원장 커비 원장 커비 원장 커비 원장 커비 ",
+                            style: TextStyle(
+                              fontSize: Sizes.size12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Gaps.h4,
+                        FaIcon(
+                          FontAwesomeIcons.heart,
+                          size: Sizes.size16,
+                        ),
+                        Gaps.h2,
+                        Text(
+                          "1.2K",
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
             for (var tab in tabs.skip(1))
