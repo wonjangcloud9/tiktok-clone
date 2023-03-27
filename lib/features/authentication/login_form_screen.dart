@@ -49,9 +49,6 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                 decoration: const InputDecoration(
                   hintText: "Enter your email",
                 ),
-                validator: (value) {
-                  // return "I don't like this email";
-                },
                 onSaved: (newValue) {
                   if (newValue != null) {
                     formData["email"] = newValue;
@@ -63,9 +60,6 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                 decoration: const InputDecoration(
                   hintText: "Enter your password",
                 ),
-                validator: (value) {
-                  // return "wrong password";
-                },
                 onSaved: (newValue) {
                   if (newValue != null) {
                     formData["password"] = newValue;
