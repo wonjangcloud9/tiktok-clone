@@ -22,11 +22,17 @@ class ActivityScreen extends StatelessWidget {
           horizontal: 0,
         ),
         children: [
-          Text(
-            "New",
-            style: TextStyle(
-              fontSize: Sizes.size14,
-              color: Colors.grey.shade500,
+          Gaps.v14,
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Sizes.size12,
+            ),
+            child: Text(
+              "New",
+              style: TextStyle(
+                fontSize: Sizes.size14,
+                color: Colors.grey.shade500,
+              ),
             ),
           ),
           Gaps.v14,
