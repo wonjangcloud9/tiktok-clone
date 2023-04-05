@@ -134,6 +134,69 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ],
                 ),
               ),
+              Gaps.v14,
+              FractionallySizedBox(
+                widthFactor: 0.33,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: Sizes.size12,
+                  ),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(Sizes.size4),
+                      )),
+                  child: const Text(
+                    "Follow",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: Sizes.size16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              Gaps.v14,
+              const Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: Sizes.size32,
+                ),
+                child: Text(
+                  "All highlights and where to watch live matches on FIFA I wonder how it would look",
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Gaps.v14,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  FaIcon(
+                    FontAwesomeIcons.link,
+                    size: Sizes.size12,
+                  ),
+                  Gaps.h4,
+                  Text(
+                    "https://github.com/wonjangcloud9",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              Gaps.v5,
+              const TabBar(
+                indicatorSize: TabBarIndicatorSize.label,
+                labelPadding: EdgeInsets.only(
+                  bottom: Sizes.size10,
+                ),
+                labelColor: Colors.black,
+                indicatorColor: Colors.black,
+                tabs: [
+                  Icon(Icons.grid_4x4_rounded),
+                  FaIcon(FontAwesomeIcons.heart),
+                ],
+              ),
             ],
           ),
         ),
