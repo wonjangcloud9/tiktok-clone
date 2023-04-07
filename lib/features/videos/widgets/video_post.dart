@@ -71,6 +71,9 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _onVisibilityChanged(VisibilityInfo visibilityInfo) {
+    if (!mounted) {
+      return;
+    }
     final visiblePercentage = visibilityInfo.visibleFraction * 100;
     if (visiblePercentage == 100 &&
         !_videoPlayerController.value.isPlaying &&
