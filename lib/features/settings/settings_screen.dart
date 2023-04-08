@@ -12,9 +12,24 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: Column(
-        children: const [
-          CircularProgressIndicator.adaptive(),
+      body: ListView(
+        children: [
+          ListTile(
+            onTap: () => showAboutDialog(
+              context: context,
+              applicationName: 'TikTok Clone',
+              applicationVersion: '1.0.0',
+              applicationLegalese: "All rights reserved. Please don't steal.",
+            ),
+            title: const Text(
+              'Account',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: const Text('About this app...'),
+          ),
+          const AboutListTile(),
         ],
       ),
     );
