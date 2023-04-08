@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -15,19 +12,41 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            onTap: () => showAboutDialog(
-              context: context,
-              applicationName: 'TikTok Clone',
-              applicationVersion: '1.0.0',
-              applicationLegalese: "All rights reserved. Please don't steal.",
-            ),
-            title: const Text(
-              'Account',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            subtitle: const Text('About this app...'),
+            title: const Text('What is your birthday?'),
+            onTap: () async {
+              final date = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1900),
+                lastDate: DateTime(2030),
+              );
+              print(date);
+              // ignore: use_build_context_synchronously
+              final time = await showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.now(),
+              );
+              print(time);
+              // ignore: use_build_context_synchronously
+              final booking = await showDateRangePicker(
+                context: context,
+                firstDate: DateTime(1900),
+                lastDate: DateTime(2030),
+                builder: (context, child) {
+                  return Theme(
+                    data: ThemeData(
+                      appBarTheme: const AppBarTheme(
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                    child: child!,
+                  );
+                },
+              );
+
+              print(booking);
+            },
           ),
           const AboutListTile(),
         ],
