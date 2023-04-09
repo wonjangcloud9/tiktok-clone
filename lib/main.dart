@@ -34,7 +34,7 @@ class TikTokApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: ThemeData(
         brightness: Brightness.light,
-        textTheme: GoogleFonts.itimTextTheme(),
+        textTheme: Typography.blackMountainView,
         scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color(0xFFE9435A),
         splashColor: Colors.transparent,
@@ -55,11 +55,9 @@ class TikTokApp extends StatelessWidget {
       ),
       darkTheme: ThemeData(
         bottomAppBarTheme: BottomAppBarTheme(
-          color: Colors.grey.shade800,
+          color: Colors.grey.shade900,
         ),
-        textTheme: GoogleFonts.itimTextTheme(
-          ThemeData(brightness: Brightness.dark).textTheme,
-        ),
+        textTheme: Typography.whiteMountainView,
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xFF121212),
         primaryColor: const Color(0xFFE9435A),
@@ -67,12 +65,12 @@ class TikTokApp extends StatelessWidget {
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color(0xFFE9435A),
         ),
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
           foregroundColor: Colors.white,
-          backgroundColor: Color(0xFF121212),
+          backgroundColor: Colors.grey.shade900,
           elevation: 0,
           centerTitle: true,
-          titleTextStyle: TextStyle(
+          titleTextStyle: const TextStyle(
             color: Colors.white,
             fontSize: Sizes.size16 + Sizes.size2,
             fontWeight: FontWeight.w600,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants/sizes.dart';
+import '../../../utils.dart';
 
 class FormButton extends StatelessWidget {
   const FormButton({
@@ -27,8 +28,11 @@ class FormButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(
             Sizes.size5,
           ),
-          color:
-              disable ? Colors.grey.shade300 : Theme.of(context).primaryColor,
+          color: disable
+              ? isDarkMode(context)
+                  ? Colors.grey.shade800
+                  : Colors.grey.shade300
+              : Theme.of(context).primaryColor,
         ),
         child: AnimatedDefaultTextStyle(
           duration: const Duration(
