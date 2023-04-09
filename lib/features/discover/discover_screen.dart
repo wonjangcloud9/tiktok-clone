@@ -88,74 +88,78 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                 mainAxisSpacing: Sizes.size10,
                 childAspectRatio: 9 / 20,
               ),
-              itemBuilder: (context, index) => Column(
-                children: [
-                  Container(
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(
-                        Sizes.size4,
-                      ),
-                    ),
-                    child: AspectRatio(
-                      aspectRatio: 9 / 16,
-                      child: FadeInImage.assetNetwork(
-                        fit: BoxFit.cover,
-                        placeholder: "assets/images/placeholder.jpg",
-                        image:
-                            "https://upload.wikimedia.org/wikipedia/en/2/2d/SSU_Kirby_artwork.png",
-                      ),
-                    ),
-                  ),
-                  Gaps.v10,
-                  const Text(
-                    "커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 ",
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: Sizes.size12 + Sizes.size2,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Gaps.v5,
-                  DefaultTextStyle(
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey.shade600,
-                    ),
-                    child: Row(
-                      children: const [
-                        CircleAvatar(
-                          radius: Sizes.size16,
-                          backgroundImage: NetworkImage(
-                              "https://avatars.githubusercontent.com/u/48057918?v=4"),
+              itemBuilder: (context, index) => LayoutBuilder(
+                builder: (context, constraints) => Column(
+                  children: [
+                    Container(
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(
+                          Sizes.size4,
                         ),
-                        Gaps.h4,
-                        Expanded(
-                          child: Text(
-                            "원장 커비 원장 커비 원장 커비 원장 커비 ",
-                            style: TextStyle(
-                              fontSize: Sizes.size12,
-                              fontWeight: FontWeight.bold,
+                      ),
+                      child: AspectRatio(
+                        aspectRatio: 9 / 16,
+                        child: FadeInImage.assetNetwork(
+                          fit: BoxFit.cover,
+                          placeholder: "assets/images/placeholder.jpg",
+                          image:
+                              "https://upload.wikimedia.org/wikipedia/en/2/2d/SSU_Kirby_artwork.png",
+                        ),
+                      ),
+                    ),
+                    Gaps.v10,
+                    const Text(
+                      "커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 커비 ",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: Sizes.size12 + Sizes.size2,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Gaps.v5,
+                    if (constraints.maxWidth < 200 ||
+                        constraints.maxWidth > 250)
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade600,
+                        ),
+                        child: Row(
+                          children: const [
+                            CircleAvatar(
+                              radius: Sizes.size16,
+                              backgroundImage: NetworkImage(
+                                  "https://avatars.githubusercontent.com/u/48057918?v=4"),
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                            Gaps.h4,
+                            Expanded(
+                              child: Text(
+                                "원장 커비 원장 커비 원장 커비 원장 커비 ",
+                                style: TextStyle(
+                                  fontSize: Sizes.size12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Gaps.h4,
+                            FaIcon(
+                              FontAwesomeIcons.heart,
+                              size: Sizes.size16,
+                            ),
+                            Gaps.h2,
+                            Text(
+                              "1.2K",
+                            ),
+                          ],
                         ),
-                        Gaps.h4,
-                        FaIcon(
-                          FontAwesomeIcons.heart,
-                          size: Sizes.size16,
-                        ),
-                        Gaps.h2,
-                        Text(
-                          "1.2K",
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                      ),
+                  ],
+                ),
               ),
             ),
             for (var tab in tabs.skip(1))
