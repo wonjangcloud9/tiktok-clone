@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
+import 'package:tiktok_clone/utils.dart';
 
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
@@ -55,6 +56,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               controller: _textEditingController,
               onChanged: _onSearchChanged,
               onSubmitted: _onSearchSubmitted,
+              style: TextStyle(
+                color: isDarkMode(context) ? Colors.white : Colors.black,
+              ),
             ),
           ),
           bottom: TabBar(
@@ -67,9 +71,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               fontSize: Sizes.size16,
               fontWeight: FontWeight.w600,
             ),
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.grey.shade500,
-            indicatorColor: Colors.black,
             onTap: (index) {
               FocusScope.of(context).unfocus();
             },
@@ -125,44 +126,44 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                       ),
                     ),
                     Gaps.v5,
-                    if (constraints.maxWidth < 200 ||
-                        constraints.maxWidth > 250)
-                      DefaultTextStyle(
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey.shade600,
-                        ),
-                        child: Row(
-                          children: const [
-                            CircleAvatar(
-                              radius: Sizes.size16,
-                              backgroundImage: NetworkImage(
-                                  "https://avatars.githubusercontent.com/u/48057918?v=4"),
-                            ),
-                            Gaps.h4,
-                            Expanded(
-                              child: Text(
-                                "원장 커비 원장 커비 원장 커비 원장 커비 ",
-                                style: TextStyle(
-                                  fontSize: Sizes.size12,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Gaps.h4,
-                            FaIcon(
-                              FontAwesomeIcons.heart,
-                              size: Sizes.size16,
-                            ),
-                            Gaps.h2,
-                            Text(
-                              "1.2K",
-                            ),
-                          ],
-                        ),
+                    DefaultTextStyle(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: isDarkMode(context)
+                            ? Colors.grey.shade300
+                            : Colors.grey.shade600,
                       ),
+                      child: Row(
+                        children: const [
+                          CircleAvatar(
+                            radius: Sizes.size16,
+                            backgroundImage: NetworkImage(
+                                "https://avatars.githubusercontent.com/u/48057918?v=4"),
+                          ),
+                          Gaps.h4,
+                          Expanded(
+                            child: Text(
+                              "원장 커비 원장 커비 원장 커비 원장 커비 ",
+                              style: TextStyle(
+                                fontSize: Sizes.size12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Gaps.h4,
+                          FaIcon(
+                            FontAwesomeIcons.heart,
+                            size: Sizes.size16,
+                          ),
+                          Gaps.h2,
+                          Text(
+                            "1.2K",
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
