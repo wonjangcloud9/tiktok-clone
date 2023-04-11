@@ -6,6 +6,7 @@ import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 
 class UserNameScreen extends StatefulWidget {
+  static const routeName = "/usename";
   const UserNameScreen({super.key});
 
   @override

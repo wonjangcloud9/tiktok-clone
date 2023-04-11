@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
+import 'package:tiktok_clone/router.dart';
 
 import 'constants/sizes.dart';
 
@@ -28,7 +29,8 @@ class TikTokApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',
       themeMode: ThemeMode.system,
@@ -107,11 +109,6 @@ class TikTokApp extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: "/",
-      routes: {
-        "/": (context) => const SignUpScreen(),
-        "/username": (context) => const UserNameScreen(),
-      },
     );
   }
 }

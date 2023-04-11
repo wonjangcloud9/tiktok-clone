@@ -6,6 +6,7 @@ import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 
 class EmailScreen extends StatefulWidget {
+  static const routeName = "/email";
   const EmailScreen({super.key});
 
   @override
