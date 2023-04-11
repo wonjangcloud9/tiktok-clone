@@ -133,7 +133,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                   IconButton(
                     onPressed: () {},
                     icon: const FaIcon(
-                      FontAwesomeIcons.smile,
+                      FontAwesomeIcons.faceSmile,
                       color: Colors.black,
                     ),
                   ),

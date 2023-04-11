@@ -13,7 +13,7 @@ class ChatsScreen extends StatefulWidget {
 class _ChatsScreenState extends State<ChatsScreen> {
   final GlobalKey<AnimatedListState> _key = GlobalKey<AnimatedListState>();
 
-  List<int> _items = [];
+  final List<int> _items = [];
 
   final Duration _duration = const Duration(
     milliseconds: 300,

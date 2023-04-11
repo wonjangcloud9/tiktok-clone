@@ -6,7 +6,9 @@ import 'package:tiktok_clone/features/settings/settings_screen.dart';
 import 'package:tiktok_clone/features/users/widgets/persistent_tab_bar.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+  final String username;
+
+  const UserProfileScreen({super.key, required this.username});
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -32,7 +34,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 SliverAppBar(
-                  title: const Text('원장'),
+                  title: Text(widget.username),
                   actions: [
                     IconButton(
                       icon: const FaIcon(
@@ -57,9 +59,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            "@wonjang",
-                            style: TextStyle(
+                          Text(
+                            "@${widget.username}",
+                            style: const TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: Sizes.size18,
                             ),
@@ -84,7 +86,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   "37",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: Sizes.size18,
+                                    fontSize: Sizes.size14,
                                   ),
                                 ),
                                 Gaps.v3,
@@ -109,7 +111,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   "10.5M",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: Sizes.size18,
+                                    fontSize: Sizes.size14,
                                   ),
                                 ),
                                 Gaps.v3,
@@ -134,7 +136,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   "194.3M",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: Sizes.size18,
+                                    fontSize: Sizes.size14,
                                   ),
                                 ),
                                 Gaps.v3,
