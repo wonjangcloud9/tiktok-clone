@@ -18,8 +18,7 @@ class SignUpScreen extends StatelessWidget {
   }
 
   void _onEmailTap(BuildContext context) {
-    // context.push(UserNameScreen.routeName);
-    context.push("/users/:username?show=likes");
+    context.push(UserNameScreen.routeName);
   }
 
   @override
