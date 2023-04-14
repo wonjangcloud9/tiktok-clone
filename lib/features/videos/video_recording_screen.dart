@@ -12,13 +12,25 @@ class VideoRecordingScreen extends StatefulWidget {
   State<VideoRecordingScreen> createState() => _VideoRecordingScreenState();
 }
 
-class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
+class _VideoRecordingScreenState extends State<VideoRecordingScreen>
+    with SingleTickerProviderStateMixin {
   bool _hasPermission = false;
 
   bool _isSelfieMode = false;
 
-  late FlashMode _flashMode;
+  late final AnimationController _animationController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 300),
+  );
 
+  late final Animation<double> _buttonAnimation = Tween(
+    begin: 1.0,
+    end: 1.3,
+  ).animate(
+    _animationController,
+  );
+
+  late FlashMode _flashMode;
   late CameraController _cameraController;
 
   Future<void> initCamera() async {
@@ -67,6 +79,14 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     _flashMode = newFlashMode;
     _cameraController.setFlashMode(newFlashMode);
     setState(() {});
+  }
+
+  void _onTapDown(TapDownDetails _) {
+    _animationController.forward();
+  }
+
+  void _onTapUp(TapUpDetails _) {
+    _animationController.reverse();
   }
 
   @override
@@ -148,7 +168,25 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                         ),
                       ],
                     ),
-                  )
+                  ),
+                  Positioned(
+                    bottom: Sizes.size36,
+                    child: GestureDetector(
+                      onTapDown: _onTapDown,
+                      onTapUp: _onTapUp,
+                      child: ScaleTransition(
+                        scale: _buttonAnimation,
+                        child: Container(
+                          width: Sizes.size80,
+                          height: Sizes.size80,
+                          decoration: BoxDecoration(
+                            color: Colors.red.shade400,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
       ),
