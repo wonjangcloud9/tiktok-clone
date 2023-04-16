@@ -21,6 +21,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   bool _isSelfieMode = false;
 
+  double _minZoomLevel = 1.0;
+  double _maxZoomLevel = 1.0;
+  final double _currentZoomLevel = 1.0;
+
   late final AnimationController _buttonAnmationController =
       AnimationController(
     vsync: this,
@@ -82,12 +86,21 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   Future<void> initCamera() async {
     final cameras = await availableCameras();
+    if (cameras.isEmpty) {
+      return;
+    }
+
     _cameraController = CameraController(
       cameras[_isSelfieMode ? 1 : 0],
       ResolutionPreset.ultraHigh,
     );
 
     await _cameraController.initialize();
+
+    await _cameraController.prepareForVideoRecording();
+
+    _minZoomLevel = await _cameraController.getMinZoomLevel();
+    _maxZoomLevel = await _cameraController.getMaxZoomLevel();
 
     _flashMode = _cameraController.value.flashMode;
   }
@@ -126,6 +139,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     if (_cameraController.value.isRecordingVideo) return;
 
     await _cameraController.startVideoRecording();
+    print("====================================");
+    print(_);
+    print("====================================");
 
     _buttonAnmationController.forward();
     _progressAnimationController.forward();
@@ -171,6 +187,19 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
         ),
       ),
     );
+  }
+
+  void _startZoomChange(DragUpdateDetails details) {
+    print(details);
+
+    final dy = details.localPosition.dy;
+    if (dy >= 0) {
+      if (_minZoomLevel > _currentZoomLevel + (-dy * 0.05)) return;
+      _cameraController.setZoomLevel(_currentZoomLevel + (-dy * 0.05));
+    } else {
+      if (_maxZoomLevel < _currentZoomLevel + (-dy * 0.005)) return;
+      _cameraController.setZoomLevel(_currentZoomLevel + (-dy * 0.005));
+    }
   }
 
   @override
@@ -262,6 +291,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                         GestureDetector(
                           onTapDown: _startRecording,
                           onTapUp: (details) => _stopRecording(),
+                          onPanUpdate: _startZoomChange,
                           child: ScaleTransition(
                             scale: _buttonAnimation,
                             child: Stack(
