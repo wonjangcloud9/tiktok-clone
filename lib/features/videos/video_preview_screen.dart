@@ -10,8 +10,13 @@ import 'package:video_player/video_player.dart';
 
 class VideoPreviewScreen extends StatefulWidget {
   final XFile video;
+  final bool isPicked;
 
-  const VideoPreviewScreen({super.key, required this.video});
+  const VideoPreviewScreen({
+    super.key,
+    required this.video,
+    required this.isPicked,
+  });
 
   @override
   State<VideoPreviewScreen> createState() => _VideoPreviewScreenState();
@@ -56,12 +61,13 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
         backgroundColor: Colors.black,
         title: const Text('Video Preview'),
         actions: [
-          IconButton(
-            icon: FaIcon(_savedVideo
-                ? FontAwesomeIcons.check
-                : FontAwesomeIcons.download),
-            onPressed: _saveToGallery,
-          ),
+          if (!widget.isPicked)
+            IconButton(
+              icon: FaIcon(_savedVideo
+                  ? FontAwesomeIcons.check
+                  : FontAwesomeIcons.download),
+              onPressed: _saveToGallery,
+            ),
         ],
       ),
       body: _videoPlayerController.value.isInitialized
