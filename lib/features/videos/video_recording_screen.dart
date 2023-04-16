@@ -16,7 +16,7 @@ class VideoRecordingScreen extends StatefulWidget {
 }
 
 class _VideoRecordingScreenState extends State<VideoRecordingScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   bool _hasPermission = false;
 
   bool _isSelfieMode = false;
@@ -44,6 +44,41 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   late FlashMode _flashMode;
   late CameraController _cameraController;
+
+  @override
+  void initState() {
+    super.initState();
+    initPermission();
+    WidgetsBinding.instance.addObserver(this);
+    _progressAnimationController.addListener(() {
+      setState(() {});
+    });
+    _progressAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _stopRecording();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _buttonAnmationController.dispose();
+    _progressAnimationController.dispose();
+    _cameraController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (!_hasPermission) return;
+    if (!_cameraController.value.isInitialized) return;
+    if (state == AppLifecycleState.inactive) {
+      _cameraController.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      await initCamera();
+      setState(() {});
+    }
+  }
 
   Future<void> initCamera() async {
     final cameras = await availableCameras();
@@ -74,20 +109,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    initPermission();
-    _progressAnimationController.addListener(() {
-      setState(() {});
-    });
-    _progressAnimationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _stopRecording();
-      }
-    });
-  }
-
   Future<void> _toggleSelfieMode() async {
     _isSelfieMode = !_isSelfieMode;
     print(_isSelfieMode);
@@ -95,9 +116,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     setState(() {});
   }
 
-  void _setFlashMode(FlashMode newFlashMode) {
+  Future<void> _setFlashMode(FlashMode newFlashMode) async {
     _flashMode = newFlashMode;
-    _cameraController.setFlashMode(newFlashMode);
+    await _cameraController.setFlashMode(newFlashMode);
     setState(() {});
   }
 
@@ -129,14 +150,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _buttonAnmationController.dispose();
-    _progressAnimationController.dispose();
-    _cameraController.dispose();
-    super.dispose();
   }
 
   Future<void> _onPickVideoPressed() async {
