@@ -11,6 +11,7 @@ import 'package:tiktok_clone/utils.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 import '../../../features/users/user_profile_screen.dart';
+import '../../../features/videos/video_recording_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   static const String routeName = "mainNavigation";
@@ -27,7 +28,6 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-
   final List<String> _tabs = [
     "home",
     "discover",
@@ -36,8 +36,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     "profile",
   ];
 
-    late int _selectedIndex = _tabs.indexOf(widget.tab);
-
+  late int _selectedIndex = _tabs.indexOf(widget.tab);
 
   void _onTap(int index) {
     context.go("/${_tabs[index]}");
@@ -47,14 +46,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 
   void _onPostVideoButtonTap() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => Scaffold(
-          appBar: AppBar(title: const Text("Post Video")),
-        ),
-        fullscreenDialog: true,
-      ),
-    );
+    context.pushNamed(VideoRecordingScreen.routeName);
   }
 
   @override
