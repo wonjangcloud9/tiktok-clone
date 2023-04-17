@@ -33,7 +33,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   }
 
   void _onNextTap(BuildContext context) {
-    context.pushReplacementNamed(InterestsSreen.routeName);
+    context.goNamed(InterestsSreen.routeName);
   }
 
   void _setTextFieldDate(DateTime date) {
