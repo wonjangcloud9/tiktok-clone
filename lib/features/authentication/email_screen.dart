@@ -14,9 +14,6 @@ class EmailScreenArgs {
 }
 
 class EmailScreen extends StatefulWidget {
-  static const routeName = "email";
-  static const routeURL = "email";
-
   final String username;
 
   const EmailScreen({
@@ -70,7 +67,8 @@ class _EmailScreenState extends State<EmailScreen> {
     if (_email.isEmpty || isEmailValid() != null) {
       return;
     }
-    Navigator.of(context).push(
+    Navigator.push(
+      context,
       MaterialPageRoute(
         builder: (context) => const PasswordScreen(),
       ),

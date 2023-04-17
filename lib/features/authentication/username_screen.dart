@@ -7,8 +7,6 @@ import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 
 class UserNameScreen extends StatefulWidget {
-  static const routeName = "username";
-  static const routeURL = "username";
   const UserNameScreen({super.key});
 
   @override
@@ -40,9 +38,13 @@ class _UserNameScreenState extends State<UserNameScreen> {
     if (_username.isEmpty) {
       return;
     }
-    context.pushNamed(
-      EmailScreen.routeName,
-      extra: EmailScreenArgs(username: _username),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EmailScreen(
+          username: _username,
+        ),
+      ),
     );
   }
 
