@@ -83,7 +83,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   void dispose() {
     _buttonAnmationController.dispose();
     _progressAnimationController.dispose();
-    if (_noCamera) {
+    if (!_noCamera) {
       _cameraController.dispose();
     }
     super.dispose();
@@ -91,6 +91,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (_noCamera) return;
     if (!_hasPermission) return;
     if (!_cameraController.value.isInitialized) return;
     if (state == AppLifecycleState.inactive) {
