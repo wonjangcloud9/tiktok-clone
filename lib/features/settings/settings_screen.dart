@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../common/widgets/video_config/video_config.dart';
+import '../../common/widgets/config/video_config.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -37,6 +37,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         body: ListView(
           children: [
+            ValueListenableBuilder(
+              valueListenable: darkModeConfig,
+              builder: (context, value, child) => SwitchListTile(
+                title: const Text(
+                  "Dark Mode",
+                ),
+                subtitle: const Text(
+                  "Display will be light by default",
+                ),
+                value: value,
+                onChanged: (value) {
+                  darkModeConfig.value = !darkModeConfig.value;
+                },
+              ),
+            ),
             ValueListenableBuilder(
               valueListenable: videoConfig,
               builder: (context, value, child) => SwitchListTile(

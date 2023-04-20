@@ -6,7 +6,7 @@ import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-import '../../../common/widgets/video_config/video_config.dart';
+import '../../../common/widgets/config/video_config.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 
