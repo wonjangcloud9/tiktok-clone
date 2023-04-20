@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
 import '../../common/widgets/config/video_config.dart';
 
@@ -40,13 +41,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             SwitchListTile.adaptive(
               title: const Text(
-                "Mute all Videos.",
+                "Auto Mute",
               ),
               subtitle: const Text(
-                "Mute will be disabled by default",
+                "They will be cute.",
               ),
-              value: context.watch<VideoConfig>().isMuted,
-              onChanged: (value) => context.read<VideoConfig>().toggleMute(),
+              value: context.watch<PlaybackConfigViewModel>().muted,
+              onChanged: (value) =>
+                  context.read<PlaybackConfigViewModel>().setMuted(value),
+            ),
+            SwitchListTile.adaptive(
+              title: const Text(
+                "Auto Play",
+              ),
+              subtitle: const Text(
+                "They will be cute.",
+              ),
+              value: context.watch<PlaybackConfigViewModel>().autoplay,
+              onChanged: (value) =>
+                  context.read<PlaybackConfigViewModel>().setAutoplay(value),
             ),
             ValueListenableBuilder(
               valueListenable: darkModeConfig,
@@ -63,7 +76,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
             ),
-            SwitchListTile(
+            SwitchListTile.adaptive(
               title: const Text(
                 "Enable notifications",
               ),
