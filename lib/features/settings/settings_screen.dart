@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../common/widgets/video_config/video_config.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -27,7 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Localizations.override(
       context: context,
       locale: const Locale(
-        'es',
+        'ko',
       ),
       child: Scaffold(
         appBar: AppBar(
@@ -35,17 +37,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         body: ListView(
           children: [
-            Switch.adaptive(
-              value: _notifications,
-              onChanged: _onNotificationsChanged,
-            ),
-            CupertinoSwitch(
-              value: _notifications,
-              onChanged: _onNotificationsChanged,
+            SwitchListTile(
+              title: const Text(
+                "Auto Mute",
+              ),
+              subtitle: const Text(
+                "Videos will be muted by default",
+              ),
+              value: VideoConfigData.of(context).autoMute,
+              onChanged: (value) {
+                VideoConfigData.of(context).toggleMuted();
+              },
             ),
             SwitchListTile(
               title: const Text(
                 "Enable notifications",
+              ),
+              subtitle: const Text(
+                "They will be cute.",
               ),
               value: _notifications,
               onChanged: _onNotificationsChanged,
@@ -55,11 +64,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               value: _notifications,
               onChanged: _onNotificationsChanged,
               title: const Text(
-                "Enable notifications",
+                "Marketing emails",
+              ),
+              subtitle: const Text(
+                "We won't spam you",
               ),
             ),
             ListTile(
               title: const Text('What is your birthday?'),
+              subtitle: const Text('I need to know!'),
               onTap: () async {
                 final date = await showDatePicker(
                   context: context,
