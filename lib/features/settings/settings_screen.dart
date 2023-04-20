@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../common/widgets/config/video_config.dart';
 
@@ -37,6 +38,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         body: ListView(
           children: [
+            SwitchListTile.adaptive(
+              title: const Text(
+                "Mute all Videos.",
+              ),
+              subtitle: const Text(
+                "Mute will be disabled by default",
+              ),
+              value: context.watch<VideoConfig>().isMuted,
+              onChanged: (value) => context.read<VideoConfig>().toggleMute(),
+            ),
             ValueListenableBuilder(
               valueListenable: darkModeConfig,
               builder: (context, value, child) => SwitchListTile(
@@ -49,21 +60,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 value: value,
                 onChanged: (value) {
                   darkModeConfig.value = !darkModeConfig.value;
-                },
-              ),
-            ),
-            ValueListenableBuilder(
-              valueListenable: videoConfig,
-              builder: (context, value, child) => SwitchListTile(
-                title: const Text(
-                  "Auto Mute",
-                ),
-                subtitle: const Text(
-                  "Videos will be muted by default",
-                ),
-                value: value,
-                onChanged: (value) {
-                  videoConfig.value = !videoConfig.value;
                 },
               ),
             ),
