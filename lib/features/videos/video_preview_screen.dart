@@ -86,9 +86,9 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
                 : const FaIcon(
                     FontAwesomeIcons.cloudArrowUp,
                   ),
-            onPressed: ref.watch(timelineProvider).isLoading
-                ? () {}
-                : _onUploadPressed,
+            onPressed: 
+            ref.watch(timelineProvider).isLoading ? () {} :
+            _onUploadPressed,
           ),
         ],
       ),

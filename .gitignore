@@ -54,3 +54,4 @@ macos
 windows
 .idea
 .dart_tool
+lib/firebase_options.dart
