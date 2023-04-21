@@ -1,33 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
 import '../../common/widgets/config/video_config.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool _notifications = false;
-
-  void _onNotificationsChanged(bool? newValue) {
-    if (newValue == null) {
-      return;
-    }
-    setState(() {
-      _notifications = newValue;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Localizations.override(
       context: context,
       locale: const Locale(
@@ -46,8 +30,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               subtitle: const Text(
                 "They will be cute.",
               ),
-              value: false,
-              onChanged: (value) => {},
+              value: ref.watch(playbackConfigProvider).muted,
+              onChanged: (value) =>
+                  ref.read(playbackConfigProvider.notifier).setMuted(value),
             ),
             SwitchListTile.adaptive(
               title: const Text(
@@ -56,8 +41,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               subtitle: const Text(
                 "They will be cute.",
               ),
-              value: false,
-              onChanged: (value) => {},
+              value: ref.watch(playbackConfigProvider).autoplay,
+              onChanged: (value) =>
+                  ref.read(playbackConfigProvider.notifier).setAutoplay(value),
             ),
             ValueListenableBuilder(
               valueListenable: darkModeConfig,
@@ -81,13 +67,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               subtitle: const Text(
                 "They will be cute.",
               ),
-              value: _notifications,
-              onChanged: _onNotificationsChanged,
+              value: false,
+              onChanged: (value) {},
             ),
             CheckboxListTile(
               activeColor: Colors.black,
-              value: _notifications,
-              onChanged: _onNotificationsChanged,
+              value: false,
+              onChanged: (value) {},
               title: const Text(
                 "Marketing emails",
               ),
@@ -109,7 +95,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   print(date);
                 }
 
-                if (!mounted) return;
                 final time = await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay.now(),
@@ -118,7 +103,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   print(time);
                 }
 
-                if (!mounted) return;
                 final booking = await showDateRangePicker(
                   context: context,
                   firstDate: DateTime(1900),
