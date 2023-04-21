@@ -70,29 +70,12 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5,
       duration: _animationDuration,
     );
-
-    _initMuted();
   }
 
   @override
   void dispose() {
     _videoPlayerController.dispose();
     super.dispose();
-  }
-
-  void _initMuted() {
-    context.read<PlaybackConfigViewModel>().addListener(
-          _onPlaybackConfigChanged,
-        );
-  }
-
-  void _onPlaybackConfigChanged() {
-    if (!mounted) return;
-    final muted = context.read<PlaybackConfigViewModel>().muted;
-    _setMuted(muted);
-    setState(() {
-      _isMuted = muted;
-    });
   }
 
   void _setMuted(bool isMuted) => isMuted
@@ -111,14 +94,11 @@ class _VideoPostState extends State<VideoPost>
       return;
     }
     final visiblePercentage = visibilityInfo.visibleFraction * 100;
-    if (visiblePercentage == 100 &&
-        !_videoPlayerController.value.isPlaying &&
-        !_isPaused) {
-      final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
-      if (autoplay) {
-        _videoPlayerController.play();
-      }
+
+    if (false) {
+      _videoPlayerController.play();
     }
+
     if (visiblePercentage == 0 &&
         !_isPaused &&
         _videoPlayerController.value.isPlaying) {
@@ -201,13 +181,13 @@ class _VideoPostState extends State<VideoPost>
             top: 40,
             left: 20,
             child: IconButton(
-              icon: FaIcon(
-                _isMuted
+              icon: const FaIcon(
+                false
                     ? FontAwesomeIcons.volumeOff
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,
               ),
-              onPressed: _toggleMuted,
+              onPressed: () {},
             ),
           ),
           Positioned(

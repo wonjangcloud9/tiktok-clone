@@ -46,9 +46,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               subtitle: const Text(
                 "They will be cute.",
               ),
-              value: context.watch<PlaybackConfigViewModel>().muted,
-              onChanged: (value) =>
-                  context.read<PlaybackConfigViewModel>().setMuted(value),
+              value: false,
+              onChanged: (value) => {},
             ),
             SwitchListTile.adaptive(
               title: const Text(
@@ -57,9 +56,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               subtitle: const Text(
                 "They will be cute.",
               ),
-              value: context.watch<PlaybackConfigViewModel>().autoplay,
-              onChanged: (value) =>
-                  context.read<PlaybackConfigViewModel>().setAutoplay(value),
+              value: false,
+              onChanged: (value) => {},
             ),
             ValueListenableBuilder(
               valueListenable: darkModeConfig,
