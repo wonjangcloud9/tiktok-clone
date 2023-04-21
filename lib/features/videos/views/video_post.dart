@@ -38,6 +38,7 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPaused = false;
+  bool _isMuted = false;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.duration ==
@@ -70,9 +71,7 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
 
-    context.read<PlaybackConfigViewModel>().addListener(
-          _onPlaybackConfigChanged,
-        );
+    _initMuted();
   }
 
   @override
@@ -81,15 +80,30 @@ class _VideoPostState extends State<VideoPost>
     super.dispose();
   }
 
+  void _initMuted() {
+    context.read<PlaybackConfigViewModel>().addListener(
+          _onPlaybackConfigChanged,
+        );
+  }
+
   void _onPlaybackConfigChanged() {
     if (!mounted) return;
     final muted = context.read<PlaybackConfigViewModel>().muted;
+    _setMuted(muted);
+    setState(() {
+      _isMuted = muted;
+    });
+  }
 
-    if (muted) {
-      _videoPlayerController.setVolume(0);
-    } else {
-      _videoPlayerController.setVolume(1);
-    }
+  void _setMuted(bool isMuted) => isMuted
+      ? _videoPlayerController.setVolume(0)
+      : _videoPlayerController.setVolume(1);
+
+  void _toggleMuted() {
+    _setMuted(!_isMuted);
+    setState(() {
+      _isMuted = !_isMuted;
+    });
   }
 
   void _onVisibilityChanged(VisibilityInfo visibilityInfo) {
@@ -188,16 +202,12 @@ class _VideoPostState extends State<VideoPost>
             left: 20,
             child: IconButton(
               icon: FaIcon(
-                context.watch<PlaybackConfigViewModel>().muted
+                _isMuted
                     ? FontAwesomeIcons.volumeOff
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,
               ),
-              onPressed: () {
-                context
-                    .read<PlaybackConfigViewModel>()
-                    .setMuted(!context.read<PlaybackConfigViewModel>().muted);
-              },
+              onPressed: _toggleMuted,
             ),
           ),
           Positioned(
