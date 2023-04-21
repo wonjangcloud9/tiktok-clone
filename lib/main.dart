@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiktok_clone/common/widgets/config/video_config.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
@@ -44,16 +43,16 @@ void main() async {
   );
 }
 
-class TikTokApp extends StatelessWidget {
+class TikTokApp extends ConsumerWidget {
   const TikTokApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ValueListenableBuilder(
       valueListenable: darkModeConfig,
       builder: (context, value, child) => MaterialApp.router(
-        routerConfig: router,
+        routerConfig: ref.watch(routerProvider),
         debugShowCheckedModeBanner: false,
         title: 'TikTok Clone',
         themeMode: darkModeConfig.value ? ThemeMode.dark : ThemeMode.light,
