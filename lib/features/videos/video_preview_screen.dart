@@ -2,12 +2,10 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:tiktok_clone/features/videos/models/timeline_view_model.dart';
+import 'package:tiktok_clone/features/videos/view_models/upload_video_view_model.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPreviewScreen extends ConsumerStatefulWidget {
@@ -30,10 +28,15 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
   bool _savedVideo = false;
 
   Future<void> _initVideo() async {
-    _videoPlayerController =
-        VideoPlayerController.file(File(widget.video.path));
+    _videoPlayerController = VideoPlayerController.file(
+      File(widget.video.path),
+    );
+
     await _videoPlayerController.initialize();
-    await _videoPlayerController.play();
+    await _videoPlayerController.setLooping(true);
+    await _videoPlayerController.setVolume(0);
+//     await _videoPlayerController.play();
+
     setState(() {});
   }
 
@@ -54,7 +57,7 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
 
     await GallerySaver.saveVideo(
       widget.video.path,
-      albumName: 'TikTok Clone',
+      albumName: "TikTok Clone!",
     );
 
     _savedVideo = true;
@@ -62,34 +65,37 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
     setState(() {});
   }
 
-  void _onUploadPressed() {
-    ref.read(timelineProvider.notifier).uploadVideo();
+  void _onUploadPressed() async {
+    ref.read(uploadVideoProvider.notifier).uploadVideo(
+          File(widget.video.path),
+          context,
+        );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text('Video Preview'),
+        title: const Text('Preview video'),
         actions: [
           if (!widget.isPicked)
             IconButton(
-              icon: FaIcon(_savedVideo
-                  ? FontAwesomeIcons.check
-                  : FontAwesomeIcons.download),
               onPressed: _saveToGallery,
+              icon: FaIcon(
+                _savedVideo
+                    ? FontAwesomeIcons.check
+                    : FontAwesomeIcons.download,
+              ),
             ),
           IconButton(
-            icon: ref.watch(timelineProvider).isLoading
+            onPressed: ref.watch(uploadVideoProvider).isLoading
+                ? () {}
+                : _onUploadPressed,
+            icon: ref.watch(uploadVideoProvider).isLoading
                 ? const CircularProgressIndicator()
-                : const FaIcon(
-                    FontAwesomeIcons.cloudArrowUp,
-                  ),
-            onPressed: 
-            ref.watch(timelineProvider).isLoading ? () {} :
-            _onUploadPressed,
-          ),
+                : const FaIcon(FontAwesomeIcons.cloudArrowUp),
+          )
         ],
       ),
       body: _videoPlayerController.value.isInitialized
