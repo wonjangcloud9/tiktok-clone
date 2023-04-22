@@ -2,23 +2,24 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
+import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/models/video_model.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
-import 'package:tiktok_clone/features/videos/views/video_button.dart';
-import 'package:tiktok_clone/features/videos/views/video_comments.dart';
+import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
+import 'package:tiktok_clone/features/videos/views/widgets/video_comments.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-import '../../../../common/widgets/config/video_config.dart';
-import '../../../../constants/gaps.dart';
-import '../../../../constants/sizes.dart';
-
 class VideoPost extends ConsumerStatefulWidget {
   final Function onVideoFinished;
+  final VideoModel videoData;
+
   final int index;
 
   const VideoPost({
     super.key,
+    required this.videoData,
     required this.onVideoFinished,
     required this.index,
   });
@@ -29,41 +30,41 @@ class VideoPost extends ConsumerStatefulWidget {
 
 class VideoPostState extends ConsumerState<VideoPost>
     with SingleTickerProviderStateMixin {
-  final VideoPlayerController _videoPlayerController =
-      VideoPlayerController.asset(
-    'assets/videos/video.mp4',
-  );
+  late final VideoPlayerController _videoPlayerController;
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
   late final AnimationController _animationController;
 
   bool _isPaused = false;
-  bool _isMuted = false;
+  final bool _isMuted = false;
 
   void _onVideoChange() {
-    if (_videoPlayerController.value.duration ==
-        _videoPlayerController.value.position) {
-      widget.onVideoFinished();
+    if (_videoPlayerController.value.isInitialized) {
+      if (_videoPlayerController.value.duration ==
+          _videoPlayerController.value.position) {
+        widget.onVideoFinished();
+      }
     }
   }
 
   void _initVideoPlayer() async {
+    _videoPlayerController =
+        VideoPlayerController.asset("assets/videos/video.mp4");
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
     if (kIsWeb) {
       await _videoPlayerController.setVolume(0);
     }
+    _videoPlayerController.addListener(_onVideoChange);
     setState(() {});
-    _videoPlayerController.addListener(() {
-      _onVideoChange();
-    });
   }
 
   @override
   void initState() {
     super.initState();
     _initVideoPlayer();
+
     _animationController = AnimationController(
       vsync: this,
       lowerBound: 1.0,
@@ -76,18 +77,8 @@ class VideoPostState extends ConsumerState<VideoPost>
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    _animationController.dispose();
     super.dispose();
-  }
-
-  void _setMuted(bool isMuted) => isMuted
-      ? _videoPlayerController.setVolume(0)
-      : _videoPlayerController.setVolume(1);
-
-  void _toggleMuted() {
-    _setMuted(!_isMuted);
-    setState(() {
-      _isMuted = !_isMuted;
-    });
   }
 
   void _onPlaybackConfigChanged() {
@@ -101,27 +92,21 @@ class VideoPostState extends ConsumerState<VideoPost>
     }
   }
 
-  void _onVisibilityChanged(VisibilityInfo visibilityInfo) {
-    if (!mounted) {
-      return;
-    }
-    final visiblePercentage = visibilityInfo.visibleFraction * 100;
-
-    if (ref.read(playbackConfigProvider).autoplay) {
-      _videoPlayerController.play();
-    }
-
-    if (visiblePercentage == 0 &&
+  void _onVisibilityChanged(VisibilityInfo info) {
+    if (!mounted) return;
+    if (info.visibleFraction == 1 &&
         !_isPaused &&
-        _videoPlayerController.value.isPlaying) {
-      _videoPlayerController.pause();
+        !_videoPlayerController.value.isPlaying) {
+      if (ref.read(playbackConfigProvider).autoplay) {
+        _videoPlayerController.play();
+      }
+    }
+    if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
+      _onTogglePause();
     }
   }
 
   void _onTogglePause() {
-    if (!mounted) {
-      return;
-    }
     if (_videoPlayerController.value.isPlaying) {
       _videoPlayerController.pause();
       _animationController.reverse();
@@ -144,7 +129,6 @@ class VideoPostState extends ConsumerState<VideoPost>
       backgroundColor: Colors.transparent,
       builder: (context) => const VideoComments(),
     );
-
     _onTogglePause();
   }
 
@@ -158,7 +142,10 @@ class VideoPostState extends ConsumerState<VideoPost>
           Positioned.fill(
             child: _videoPlayerController.value.isInitialized
                 ? VideoPlayer(_videoPlayerController)
-                : Container(color: Colors.black),
+                : Image.network(
+                    widget.videoData.thumbnailUrl,
+                    fit: BoxFit.cover,
+                  ),
           ),
           Positioned.fill(
             child: GestureDetector(
@@ -190,8 +177,8 @@ class VideoPostState extends ConsumerState<VideoPost>
             ),
           ),
           Positioned(
-            top: 40,
             left: 20,
+            top: 40,
             child: IconButton(
               icon: FaIcon(
                 ref.watch(playbackConfigProvider).muted
@@ -207,21 +194,23 @@ class VideoPostState extends ConsumerState<VideoPost>
             left: 10,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  "@원장",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: Sizes.size20,
-                      fontWeight: FontWeight.bold),
+                  "@${widget.videoData.creator}",
+                  style: const TextStyle(
+                    fontSize: Sizes.size20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Gaps.v10,
                 Text(
-                  "원장님의 특별한 강의",
-                  style: TextStyle(
+                  widget.videoData.description,
+                  style: const TextStyle(
+                    fontSize: Sizes.size16,
                     color: Colors.white,
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -230,35 +219,37 @@ class VideoPostState extends ConsumerState<VideoPost>
             right: 10,
             child: Column(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.black,
                   foregroundColor: Colors.white,
                   foregroundImage: NetworkImage(
-                      "https://avatars.githubusercontent.com/u/48057918?v=4"),
-                  child: Text("원장"),
+                    "https://firebasestorage.googleapis.com/v0/b/tiktok-abc-xyz.appspot.com/o/avatars%2F${widget.videoData.creatorUid}?alt=media",
+                  ),
+                  child: Text(widget.videoData.creator),
                 ),
                 Gaps.v24,
-                const VideoButton(
-                  icon: FontAwesomeIcons.solidHeart,
-                  text: "2.9M",
-                ),
+                VideoButton(
+                    icon: FontAwesomeIcons.solidHeart,
+                    text: S.of(context).likeCount(widget.videoData.likes)),
                 Gaps.v24,
                 GestureDetector(
                   onTap: () => _onCommentsTap(context),
-                  child: const VideoButton(
+                  child: VideoButton(
                     icon: FontAwesomeIcons.solidComment,
-                    text: "33K",
+                    text: S.of(context).commentCount(
+                          widget.videoData.comments,
+                        ),
                   ),
                 ),
                 Gaps.v24,
                 const VideoButton(
                   icon: FontAwesomeIcons.share,
                   text: "Share",
-                ),
+                )
               ],
             ),
-          )
+          ),
         ],
       ),
     );

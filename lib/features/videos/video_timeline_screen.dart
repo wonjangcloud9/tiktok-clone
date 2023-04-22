@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tiktok_clone/features/videos/models/timeline_view_model.dart';
-import 'package:tiktok_clone/features/videos/views/video_post.dart';
+import 'package:tiktok_clone/features/videos/view_models/timeline_view_model.dart';
+import 'package:tiktok_clone/features/videos/views/widgets/video_post.dart';
 
 class VideoTimelineScreen extends ConsumerStatefulWidget {
   const VideoTimelineScreen({super.key});
@@ -13,18 +13,29 @@ class VideoTimelineScreen extends ConsumerStatefulWidget {
 class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
   int _itemCount = 4;
 
-  final Duration _scrollDuration = const Duration(milliseconds: 250);
-  final Curve _scrollCurve = Curves.linear;
   final PageController _pageController = PageController();
 
-  void _onPageChange(int page) {
+  final Duration _scrollDuration = const Duration(milliseconds: 250);
+  final Curve _scrollCurve = Curves.linear;
+
+  void _onPageChanged(int page) {
     _pageController.animateToPage(
       page,
       duration: _scrollDuration,
       curve: _scrollCurve,
     );
-    _itemCount = _itemCount + 4;
-    setState(() {});
+    if (page == _itemCount - 1) {
+      _itemCount = _itemCount + 4;
+      setState(() {});
+    }
+  }
+
+  void _onVideoFinished() {
+    return;
+    /* _pageController.nextPage(
+      duration: _scrollDuration,
+      curve: _scrollCurve,
+    ); */
   }
 
   @override
@@ -33,11 +44,7 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
     super.dispose();
   }
 
-  void _onVideoFinished() {
-    return;
-  }
-
-  Future<void> _onRefresh() async {
+  Future<void> _onRefresh() {
     return Future.delayed(
       const Duration(seconds: 5),
     );
@@ -51,24 +58,28 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
           ),
           error: (error, stackTrace) => Center(
             child: Text(
-              "Could not load videos. $error",
+              'Could not load videos: $error',
               style: const TextStyle(color: Colors.white),
             ),
           ),
           data: (videos) => RefreshIndicator(
             onRefresh: _onRefresh,
             displacement: 50,
-            edgeOffset: 100,
+            edgeOffset: 20,
             color: Theme.of(context).primaryColor,
             child: PageView.builder(
               controller: _pageController,
               scrollDirection: Axis.vertical,
-              onPageChanged: _onPageChange,
+              onPageChanged: _onPageChanged,
               itemCount: videos.length,
-              itemBuilder: (context, index) => VideoPost(
-                onVideoFinished: _onVideoFinished,
-                index: index,
-              ),
+              itemBuilder: (context, index) {
+                final videoData = videos[index];
+                return VideoPost(
+                  onVideoFinished: _onVideoFinished,
+                  index: index,
+                  videoData: videoData,
+                );
+              },
             ),
           ),
         );
