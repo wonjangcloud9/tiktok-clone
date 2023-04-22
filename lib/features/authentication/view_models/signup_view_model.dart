@@ -29,7 +29,7 @@ class SignUpViewModel extends AsyncNotifier<void> {
           form["password"],
         );
 
-        await users.createAccount(userCredential);
+        await users.createProfile(userCredential);
       },
     );
     if (state.hasError) {
