@@ -30,7 +30,7 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
     if (credential.user == null) {
       throw Exception('Account not created');
     }
-    state = AsyncValue.loading();
+    state = const AsyncValue.loading();
 
     final profile = UserProfileModel(
       hasAvatar: false,

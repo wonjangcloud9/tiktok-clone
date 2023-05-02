@@ -142,7 +142,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   Future<void> _toggleSelfieMode() async {
     _isSelfieMode = !_isSelfieMode;
-    print(_isSelfieMode);
+    if (kDebugMode) {
+      print(_isSelfieMode);
+    }
     await initCamera();
     setState(() {});
   }
@@ -184,7 +186,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   }
 
   Future<void> _onPickVideoPressed() async {
-    print("뭔버그지1");
+    if (kDebugMode) {
+      print("뭔버그지1");
+    }
     final video = await ImagePicker().pickVideo(
       source: ImageSource.gallery,
     );
@@ -205,7 +209,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   }
 
   void _startZoomChange(DragUpdateDetails details) {
-    print(details);
+    if (kDebugMode) {
+      print(details);
+    }
 
     final dy = details.localPosition.dy;
     if (dy >= 0) {
@@ -319,7 +325,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
-                                Container(
+                                SizedBox(
                                     width: Sizes.size80 + Sizes.size14,
                                     height: Sizes.size80 + Sizes.size14,
                                     child: CircularProgressIndicator(

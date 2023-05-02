@@ -37,7 +37,6 @@ class VideoPostState extends ConsumerState<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPaused = false;
-  final bool _isMuted = false;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -229,17 +228,16 @@ class VideoPostState extends ConsumerState<VideoPost>
                   child: Text(widget.videoData.creator),
                 ),
                 Gaps.v24,
-                VideoButton(
-                    icon: FontAwesomeIcons.solidHeart,
-                    text: S.of(context).likeCount(widget.videoData.likes)),
+                const VideoButton(
+                  icon: FontAwesomeIcons.solidHeart,
+                  text: "hi",
+                ),
                 Gaps.v24,
                 GestureDetector(
                   onTap: () => _onCommentsTap(context),
-                  child: VideoButton(
+                  child: const VideoButton(
                     icon: FontAwesomeIcons.solidComment,
-                    text: S.of(context).commentCount(
-                          widget.videoData.comments,
-                        ),
+                    text: "Hi",
                   ),
                 ),
                 Gaps.v24,

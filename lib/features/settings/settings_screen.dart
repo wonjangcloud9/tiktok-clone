@@ -97,6 +97,7 @@ class SettingsScreen extends ConsumerWidget {
                   print(date);
                 }
 
+                // ignore: use_build_context_synchronously
                 final time = await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay.now(),
@@ -105,6 +106,7 @@ class SettingsScreen extends ConsumerWidget {
                   print(time);
                 }
 
+                // ignore: use_build_context_synchronously
                 final booking = await showDateRangePicker(
                   context: context,
                   firstDate: DateTime(1900),

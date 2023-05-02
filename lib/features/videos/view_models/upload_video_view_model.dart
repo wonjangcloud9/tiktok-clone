@@ -41,7 +41,9 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
               creator: userProfile.name,
             ),
           );
+          // ignore: use_build_context_synchronously
           context.pop();
+          // ignore: use_build_context_synchronously
           context.pop();
         }
       });

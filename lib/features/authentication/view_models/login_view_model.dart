@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,13 +16,15 @@ class LoginViewModel extends AsyncNotifier<void> {
 
   Future<void> login(
       String email, String password, BuildContext context) async {
-    state = AsyncValue.loading();
+    state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await _repository.signIn(email, password);
     });
     if (state.hasError) {
+      // ignore: use_build_context_synchronously
       showFirebaseErrorSnack(context, state.error);
     } else {
+      // ignore: use_build_context_synchronously
       context.go('/home');
     }
   }

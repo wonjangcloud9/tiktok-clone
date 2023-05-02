@@ -18,7 +18,7 @@ class SignUpViewModel extends AsyncNotifier<void> {
   }
 
   Future<void> signUp(BuildContext context) async {
-    state = AsyncValue.loading();
+    state = const AsyncValue.loading();
     final form = ref.read(signUpForm);
     final users = ref.read(usersProvider.notifier);
 
@@ -33,8 +33,10 @@ class SignUpViewModel extends AsyncNotifier<void> {
       },
     );
     if (state.hasError) {
+      // ignore: use_build_context_synchronously
       showFirebaseErrorSnack(context, state.error);
     } else {
+      // ignore: use_build_context_synchronously
       context.goNamed(InterestsSreen.routeName);
     }
   }
